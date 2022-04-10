@@ -2,13 +2,19 @@ package com.company;
 import java.util.*;
 import java.io.*;
 
+/**
+ * @author Miuru Abeysiriwardana
+ * @uow_id w1761114
+ * @iit_id 2019450
+ */
+
+
 public class MazeGame {
     public static final int n = 10;
     public static char[][] grid = new char[n][n];
     static String path = "";
     static Vector<String> possiblePaths = new Vector<>();
-    static int startPos;
-    static int endPos;
+    static final int MAX =  grid.length;
     public static final String GRID_FILE = "src/com/company/mazes/maze10_CW.txt";
 
     // function to read the text file
@@ -41,7 +47,7 @@ public class MazeGame {
         }
     }
 
-    public static void printStartEnd(){
+    public static int printStartEnd(){
         //Ending Position
         for (int i=0; i< grid.length; ++i){
             for(int j=0; j< grid.length; ++j){
@@ -49,10 +55,11 @@ public class MazeGame {
                     System.out.println("\nStarting Position: " + i + ", " + j);
                 }
                 if (grid[i][j] == 'F'){
-                    System.out.println("\nEnding Position: " + i + ", " + j);
+                    System.out.println("\nEnding Position  : " + i + ", " + j);
                 }
             }
         }
+        return 0;
     }
 
     // function that returns true if the move is possible and false if it is not
@@ -68,7 +75,7 @@ public class MazeGame {
     public static void pathTaken(int row, int col, char grid[][], int n, boolean visited[][]) {
 
         //Initialization - Starting Position
-        if (row == -1 || row == n || col == -1 || col == n || visited[row][col] || grid[row][col] == 'S') {
+        if (row == -1 || row == n || col == -1 || col == n || visited[row][col] || grid[row][col] == 0) {
             return;
         }
 
@@ -77,7 +84,6 @@ public class MazeGame {
             System.out.println("DONE!");
             possiblePaths.add(path);
         }
-
 
         //Marking visited paths
         visited[row][col] = true;
@@ -108,13 +114,27 @@ public class MazeGame {
             path = path.substring(0, path.length() - 1);
         }
 
+        //Unchecking visited cells
+        visited[row][col] = false;
+
+    }
+
+    static void printPath(char grid[][], int n){
+        System.out.println("printPath");
+        boolean [][]visited = new boolean[n][MAX];
+
+        pathTaken(0, 9, grid, n, visited);
+
+        for (int i = 0; i < possiblePaths.size(); i++){
+            System.out.println("possiblePath");
+            System.out.print(possiblePaths.get(i)+ "  ");
+        }
+        System.out.println(possiblePaths);
     }
 
     public static void main(String[] args) {
         printGrid();
         printStartEnd();
+        printPath(grid, n);
     }
 }
-
-
-
